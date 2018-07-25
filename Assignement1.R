@@ -1,8 +1,9 @@
 setwd("E:/Abhishek/Personal/R_coding")
+setwd("/media/abhishek/New Volume/R Code")
 getwd()#to 
 # to load the data from a CSV file IMDB_data by skiping the second row 
 # Question 1(a)
-data=(read.csv("IMDB_data.csv")[-2,])
+data=(read.csv("IMDB_data.csv", fileEncoding = 'ISO-8859-1')[-2,])
 #------------------------------------------
 # Question 1(b).
 #Extract the unique genres and its count and store in data frame with index key

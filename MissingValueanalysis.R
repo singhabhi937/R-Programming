@@ -1,7 +1,6 @@
 setwd("/media/abhishek/New Volume/R Code")
 getwd()
 marketing_tra=read.csv("/media/abhishek/New Volume/R Code/Marketing Campaign Case Study/marketing_tr.csv", header = TRUE, na.strings =c(" ","" ,NA))
-
 #to make the data frame using all the coloumns to impute on the missing value percentage
 missing_value=data.frame(apply(marketing_tra,2,function(x){sum(is.na(x))}))
 missing_value$columns=rownames(missing_value)

@@ -1,8 +1,8 @@
-setwd("E:/Abhishek/Personal/R_coding")
-marketing_tra=read.csv("marketing_tr.csv")
-
+#setwd("E:/Abhishek/Personal/R_coding")
+setwd("/media/abhishek/New Volume1/R Code")
+marketing_tra=read.csv("Marketing Campaign Case Study/marketing_tr.csv")
+getwd()
 # use the code earlier used for missing value analysis 
-
 #to make the data frame using all the coloumns to impute on the missing value percentage
 missing_value=data.frame(apply(marketing_tra,2,function(x){sum(is.na(x))}))
 missing_value$columns=rownames(missing_value)
@@ -25,8 +25,8 @@ marketing_tra=knnImputation(marketing_tra,5)
 
 #outlier Analysis
 
-#the following code is used to convert all the categorical variable in to 
-#numeric  as it it consume the less memory
+#the following code is used to convert all the cateotical variabble to be 
+#represnetaed in numeric way as it it consume the less memory
 
 for(i in 1:ncol(marketing_tra))
 {
@@ -46,9 +46,59 @@ marketing_tra[,i]=factor(marketing_tra[,i],labels = 1:length(levels(marketing_tr
 numeric_index=sapply(marketing_tra , is.numeric)
 numeric_data=marketing_tra[,numeric_index]
 cnames=colnames(numeric_data) #they will be used for box plot maps 
+library(ggplot2)
 
-for(i in 1:length(cnames))
-{
-  assign
-}
+ for (i in 1:length(cnames))
+ {
+   assign(paste0("gn",i), ggplot(aes_string(y = (cnames[i]), x = "responded"), data = subset(marketing_tra))+ 
+            stat_boxplot(geom = "errorbar", width = 0.5) +
+            geom_boxplot(outlier.colour="red", fill = "grey" ,outlier.shape=18,
+                         outlier.size=1, notch=FALSE) +
+            theme(legend.position="bottom")+
+            labs(y=cnames[i],x="responded")+
+            ggtitle(paste("Box plot of responded for",cnames[i])))
+ }
+
+#plotting points together
+
+gridExtra::grid.arrange(gn1,gn5,gn2,ncol=3)
+gridExtra::grid.arrange(gn6,gn7,ncol=2)
+gridExtra::grid.arrange(gn8,gn9,ncol=2)
+
+numeric_index = sapply(marketing_tra,is.numeric) #selecting only numeric
+
+numeric_data = marketing_tra[,numeric_index]
+
+cnames = colnames(numeric_data)
+
+# # #Remove outliers using boxplot method
+df = marketing_tra
+marketing_tra = df
+
+val = marketing_tra$previous[marketing_tra$previous %in% boxplot.stats(marketing_tra$previous)$out]
+ 
+marketing_tra = marketing_tra[which(!marketing_tra$previous %in% val),]
+                                  
+# # #loop to remove from all variables
+ for(i in cnames)
+   {
+   print(i)
+  val = marketing_tra[,i][marketing_tra[,i] %in% boxplot.stats(marketing_tra[,i])$out]
+   print(length(val))
+   marketing_tra = marketing_tra[which(!marketing_tra[,i] %in% val),]
+ }
+
+# 
+# #Replace all outliers with NA and impute
+# #create NA on "custAge
+# for(i in cnames){
+#   val = marketing_tra[,i][marketing_tra[,i] %in% boxplot.stats(marketing_tra[,i])$out]
+#   #print(length(val))
+#   marketing_tra[,i][marketing_tra[,i] %in% val] = NA
+# }
+# 
+# marketing_tra = knnImputation(marketing_tra, k = 3)
+
+
 #rm(list=ls())
+

@@ -1,6 +1,6 @@
 #setwd("E:/Abhishek/Personal/R_coding")
 setwd("/media/abhishek/New Volume1/R Code")
-marketing_tra=read.csv("Marketing Campaign Case Study/marketing_tr.csv")
+marketing_tra=read.csv("Marketing Campaign Case Study/marketing_tr.csv",header = T,na.strings = c(""," ","NA"))
 getwd()
 # use the code earlier used for missing value analysis 
 #to make the data frame using all the coloumns to impute on the missing value percentage
@@ -99,6 +99,10 @@ marketing_tra = marketing_tra[which(!marketing_tra$previous %in% val),]
 # 
 # marketing_tra = knnImputation(marketing_tra, k = 3)
 
-
+# # # Feature Selection
+# Apply the correlaton analysis on the numeric index
+library(corrgram)
+corrgram(marketing_tra[,numeric_index],order=F,
+        upper.panel=panel.pie,text.panel=panel.txt, main="corleation plot") 
 #rm(list=ls())
 

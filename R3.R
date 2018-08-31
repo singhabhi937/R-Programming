@@ -67,12 +67,15 @@ summary(W)
 q[1]
 #but the character comparison is invalid for the factor elemets
 q[18]<q[34]
-#the default level of a factor is unordered and facotor of a vector is unordered so it basically
+#the default level of a factor is unordered and factor of a vector is unordered so it basically
 #represent the nominal vector so how  to define the factor of the ordered categoicaal variable
-#if you want to have an ordered vector in that case you need to have a oredered  argument 
-#also the factor makes its own level on the basis of alphabets so you have to pass the level 
+#if you want to have an ordered vector in that case you need to have a ordered  argument 
+#also the factor decide its own level on the basis of alphabets so you have to pass the level 
 vec_1=c('a','b','a','c','z','x','b')
-a=factor(vec_1,ordered=TRUE,levels =c('a','c','b','x','z'))        
+a=factor(vec_1,ordered=TRUE,levels =c('a','c','b','x','z'))     
+b=factor(vec_1,ordered=TRUE) 
+b
+a
 vec_1[1]>vec_1[2]
 #Now comparison can be made 
 a[1]>a[2]
@@ -82,13 +85,13 @@ rm(list=ls())
 df1=data.frame(customerid =c(1:6),Category=c(rep('special' ,3),rep('Normal',3)))
 df2=data.frame(customerid =c(1:3),State=c(rep('Jaipur' ,2),rep('Pune',1)))
 df_merge=merge(df1,df2,by='customerid')
-df_merge=merge(df1,df2,by='customerid')
+
 #Left Join
 df_left=merge(df1,df2,by='customerid',all.x=TRUE) #vlookup
 #right Join
 df_right=merge(df1,df2,by='customerid',all.Y=TRUE) 
 #cross join
-df_cross=merge(df1,df2, by=NULL)
+df_cross=merge(df1,df2, by=NULL,all=T)
 
 #to perform the aggregate operation 
 rm(list=ls())

@@ -38,7 +38,7 @@ marketing_tra[,i]=factor(marketing_tra[,i],labels = 1:length(levels(marketing_tr
 
 }
 # we can also do the same thing using the apply family function 
-# but i don't know how to apply the function for this purpose  
+  
 
 #outlier Analysis 
 ## Box plot analyis but it will apply only continous numeric value
@@ -73,11 +73,12 @@ cnames = colnames(numeric_data)
 
 # # #Remove outliers using boxplot method
 df = marketing_tra
-marketing_tra = df
+#marketing_tra = df
 
 val = marketing_tra$previous[marketing_tra$previous %in% boxplot.stats(marketing_tra$previous)$out]
  
 marketing_tra = marketing_tra[which(!marketing_tra$previous %in% val),]
+a=boxplot.stats(marketing_tra[,i])$out
                                   
 # # #loop to remove from all variables
  for(i in cnames)
@@ -104,5 +105,31 @@ marketing_tra = marketing_tra[which(!marketing_tra$previous %in% val),]
 library(corrgram)
 corrgram(marketing_tra[,numeric_index],order=F,
         upper.panel=panel.pie,text.panel=panel.txt, main="corleation plot") 
+
+#Now we will perform the  chi square test on the categorical variable 
+factor_index=sapply(marketing_tra, is.factor)
+factor_data=marketing_tra[,factor_index]
+#leaving the 11th variable Responded  as it is the output variable
+
+for(i in 1:10)
+{
+print(names(factor_data[i]))
+print(chisq.test(table(factor_data$responded,factor_data[, i]))) 
+}  
+
+##feature Scaling 
+#Two methods to check for the normality of the variable 
+qqnorm(marketing_tra$custAge)
+hist(marketing_tra$custAge)
+cnames=c("custAge","campaign","previous","cons.conf.idx","cons.price.idx","nr.employed",
+         "euribor3m","pmonths","pastEmail")
+
+
+for(i in cnames)
+{
+ marketing_tra[,i]=(marketing_tra[,i]-min(marketing_tra[,i]))/(max(marketing_tra[,i])-min(marketing_tra[,i]))
+}
+  
 #rm(list=ls())
+
 
